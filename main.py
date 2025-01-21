@@ -6,6 +6,7 @@ import json
 
 FILENAME = 'notes.json'
 
+# dictionary to store notes in runtime
 notes = {
     'Приветствие':
         {
