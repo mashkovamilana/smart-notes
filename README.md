@@ -22,9 +22,9 @@ The result be displayed in the list of your notes
 
 ### Examples
 
-* Original image
-![original image](https://github.com/mashkovamilana/Smart-notes/blob/main/images/original-image.png)
-* 
+* User interface
+![user interface](https://github.com/mashkovamilana/smart-notes/blob/main/images/user-interface.png)
+
 ### Executing program
 
 
