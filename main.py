@@ -8,16 +8,16 @@ FILENAME = 'notes.json'
 
 # dictionary to store notes in runtime
 notes = {
-    'Приветствие':
+    'Greetings':
         {
-            'текст': 'Добро пожаловать в умные заметки!',
-            'теги': ['привет']
+            'text': 'Welcome to Smart notes!',
+            'tags': ['Hello']
         },
-    'Туториал':
+    'Tutorial':
         {
-            'текст': 'Нажмите кнопку: "удалить заметку", чтобы удалить заметку, Нажмите кнопку: "Создать заметку", чтобы создать заметку, Нажмите кнопку: \
-            "Почистить заметки", чтобы почистить заметки',
-            'теги': ['чайник']
+            'text': 'Click: “delete note” to delete a note, Click: “create note” to create a note, Click: \
+            “Clear Notes” button to clear notes',
+            'tags': ['Kettle']
         }
 
 }
@@ -26,24 +26,24 @@ app = QApplication([])
 main_win = QWidget()
 main_win.setFixedSize(800, 600)
 
-main_win.setWindowTitle('Умные заметки')
+main_win.setWindowTitle('Smart notes')
 notes_list_widget = QListWidget()
 tags_list_widget = QListWidget()
 text_edit = QTextEdit()
-text_edit.setPlaceholderText('Введите текст заметки...')
-notes_list_label = QLabel('Список заметок')
-create_note_button = QPushButton('Создать заметку')
+text_edit.setPlaceholderText('Enter the text of the note...')
+notes_list_label = QLabel('List of notes')
+create_note_button = QPushButton('Create a note')
 note_name_edit = QLineEdit()
-note_name_edit.setPlaceholderText('Название заметки...')
-delete_note_button = QPushButton('Удалить заметку')
-save_note_button = QPushButton('Сохранить заметку')
-tags_list_label = QLabel('Список тегов')
+note_name_edit.setPlaceholderText('Note title...')
+delete_note_button = QPushButton('Delete note')
+save_note_button = QPushButton('Save note')
+tags_list_label = QLabel('List of tags')
 tag_line_edit = QLineEdit()
-tag_line_edit.setPlaceholderText('Введите тег...')
-add_tag_button = QPushButton('Добавить к заметке')
-remove_tag_button = QPushButton('Открепить от заметки')
-search_button = QPushButton('Искать заметки по тегу')
-reset_button = QPushButton('Сбросить поиск')
+tag_line_edit.setPlaceholderText('Enter tag...')
+add_tag_button = QPushButton('Add to note')
+remove_tag_button = QPushButton('Unpin from note')
+search_button = QPushButton('Search notes by tag')
+reset_button = QPushButton('Reset search')
 
 layout_main = QHBoxLayout()
 layout_sub = QHBoxLayout()
@@ -89,8 +89,8 @@ def save_data():
 
 def show_note():
     name = notes_list_widget.selectedItems()[0].text()
-    text = notes[name]['текст']
-    tags = notes[name]['теги']
+    text = notes[name]['text']
+    tags = notes[name]['tags']
     text_edit.setText(text)
     tags_list_widget.clear()
     tags_list_widget.addItems(tags)
@@ -98,19 +98,19 @@ def show_note():
 def save_note():
     if len(notes_list_widget.selectedItems()) == 0:
         error_popup = QMessageBox()
-        error_popup.setText('Выберите заметку, чтобы ее сохранить')
+        error_popup.setText('Select a note to save it')
         error_popup.exec_()
         return
 
     text = text_edit.toPlainText()
     name = notes_list_widget.selectedItems()[0].text()
-    notes[name]['текст'] = text
+    notes[name]['text'] = text
     save_data()
 
 def delete_note():
     if len(notes_list_widget.selectedItems()) == 0:
         error_popup = QMessageBox()
-        error_popup.setText('Выберите заметку, чтобы ее удалить')
+        error_popup.setText('Select a note to delete it')
         error_popup.exec_()
         return
     name = notes_list_widget.selectedItems()[0].text()
@@ -126,17 +126,17 @@ def create_note():
     temp = name.replace(' ', '')
     if temp == '':
         error_popup = QMessageBox()
-        error_popup.setText('Название не может быть пустым')
+        error_popup.setText('Name cannot be empty')
         error_popup.exec_()
         return
     if name in notes:
         error_popup = QMessageBox()
-        error_popup.setText('Такая заметка уже существует')
+        error_popup.setText('Such a note already exists')
         error_popup.exec_()
         return
     notes[name] = {
-        'текст': '',
-        'теги': []
+        'text': '',
+        'tags': []
     }
     notes_list_widget.clear()
     notes_list_widget.addItems(notes)
@@ -147,54 +147,54 @@ def create_note():
 def add_tag():
     if len(notes_list_widget.selectedItems()) == 0:
         error_popup = QMessageBox()
-        error_popup.setText('Выберите заметку, чтобы  добавить к ней тег')
+        error_popup.setText('Select a note to add a tag to it')
         error_popup.exec_()
         return
     tag = tag_line_edit.text()
     temp = tag.replace(' ', '')
     if temp == '':
         error_popup = QMessageBox()
-        error_popup.setText('Название тега не может быть пустым')
+        error_popup.setText('Tag name cannot be empty')
         error_popup.exec_()
         return
     name = notes_list_widget.selectedItems()[0].text()
-    if tag in notes[name]['теги']:
+    if tag in notes[name]['tags']:
         error_popup = QMessageBox()
-        error_popup.setText('Такой тег уже существует')
+        error_popup.setText('Such tag already exists')
         error_popup.exec_()
         return
-    notes[name]['теги'].append(tag)
+    notes[name]['tags'].append(tag)
     tags_list_widget.clear()
-    tags_list_widget.addItems(notes[name]['теги'])
+    tags_list_widget.addItems(notes[name]['tags'])
     save_data()
 
 def delete_tag():
     if len(tags_list_widget.selectedItems()) == 0:
         error_popup = QMessageBox()
-        error_popup.setText('Выберите тег, чтобы его открепить от заметки')
+        error_popup.setText('Select a tag to unpin from a note')
         error_popup.exec_()
         return
     if len(notes_list_widget.selectedItems()) == 0:
         error_popup = QMessageBox()
-        error_popup.setText('Выберите заметку, чтобы удалить ее тег')
+        error_popup.setText('Select a note to remove a tag')
         error_popup.exec_()
         return
     name = notes_list_widget.selectedItems()[0].text()
     tag = tags_list_widget.selectedItems()[0].text()
-    notes[name]['теги'].remove(tag)
+    notes[name]['tags'].remove(tag)
     tags_list_widget.clear()
-    tags_list_widget.addItems(notes[name]['теги'])
+    tags_list_widget.addItems(notes[name]['tags'])
     save_data()
 
 def search():
     tag = tag_line_edit.text()
     filtered_notes = []
     for note in notes:
-        if tag in notes[note]['теги']:
+        if tag in notes[note]['tags']:
             filtered_notes.append(note)
     if len(filtered_notes) == 0:
         error_popup = QMessageBox()
-        error_popup.setText('Ничего не найдено')
+        error_popup.setText('Nothing found')
         error_popup.exec_()
     else:
         notes_list_widget.clear()
